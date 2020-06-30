@@ -121,23 +121,23 @@ int main(void)
         -0.5f,  0.5f,   // 4
     };
 
-    unsigned int indices[] = {
+    unsigned int indices[] = {              // allows to re-use existing vertices
         0, 1, 2,    // TRIANGLE 1 INDICES
-        2, 3, 0     // TRIANGLE 2 INDICES
+        2, 3, 0,     // TRIANGLE 2 INDICES
     };
 
     unsigned int buffer;
     glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);                                                      // binding Vertex Buffer
+    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), positions, GL_STATIC_DRAW);            // second argument is the number of VERTICES drawn (2 * 3 * number of triangles)
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
     unsigned int ibo;
     glGenBuffers(1, &ibo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);                                                 // binding Index Buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);   // second argument is the number of INDICES drawn(3 * number of triangles)
 
     ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
@@ -149,7 +149,7 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
         
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);      // Draw 2 triangles using Element/Index Buffer
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);      // Draw 2 triangles using Element/Index Buffer, second argument is the number of INDICES drawn(3 * number of triangles)
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
