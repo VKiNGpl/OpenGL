@@ -129,6 +129,8 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    GLCall(glfwSwapInterval(3));
+
     /* Initiate GLEW*/
     if (glewInit() != GLEW_OK)
         std::cout << "Error!" << std::endl;
@@ -164,13 +166,27 @@ int main(void)
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
     GLCall(glUseProgram(shader));
 
+    GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(location != 2);
+    GLCall(glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f));
+
+    float r = 0.0f;
+    float increment = 0.05f;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         
+        GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));      // Draw 2 triangles using Element/Index Buffer, second argument is the number of INDICES drawn(3 * number of triangles)
+
+        if (r > 1.0f)
+            increment = -0.05f;
+        else if (r < 0.0f)
+            increment = 0.05f;
+        r += increment;
 
         /* Swap front and back buffers */
         GLCall(glfwSwapBuffers(window));
