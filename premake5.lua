@@ -75,6 +75,12 @@ project "OpenGL"
 			"GLEW_STATIC"
 		}
 
+		linkoptions
+		{ 
+			"/NODEFAULTLIB:LIBCMT",
+			"/IGNORE:4099"
+		}
+
 	filter "configurations:Debug"
 		defines "GE_DEBUG"
 		runtime "Debug"

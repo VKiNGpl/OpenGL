@@ -23,6 +23,8 @@ int main(void) {
 	if (glewInit() != GLEW_OK)
 		std::cout << "Error!" << std::endl;
 
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
 	float positions[6] = {
 		-0.5f, -0.5f,
 		 0.0f,  0.5f,
