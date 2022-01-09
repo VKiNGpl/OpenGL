@@ -15,7 +15,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "OpenGL/vendor/GLFW/include"
 IncludeDir["GLEW"] = "OpenGL/vendor/GLEW/include"
-IncludeDir["glm"] = "OpenGL/vendor/glm"
+IncludeDir["glm"]  = "OpenGL/vendor/glm"
 
 group "Dependencies"
 	include "OpenGL/vendor/GLFW"
@@ -43,7 +43,8 @@ project "OpenGL"
 	}
 
 	defines {
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLEW_STATIC"
 	}
 
 	includedirs
@@ -57,7 +58,13 @@ project "OpenGL"
 	links
 	{
 		"GLFW",
+		"glew32s.lib",
 		"opengl32.lib"
+	}
+
+	libdirs
+	{
+		"%{prj.name}/vendor/GLEW/lib/Release/x64"
 	}
 
 	filter "system:windows"
@@ -65,9 +72,7 @@ project "OpenGL"
 
 		defines
 		{
-			"GE_PLATFORM_WINDOWS",
-			"GE_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
+			"GLEW_STATIC"
 		}
 
 	filter "configurations:Debug"
