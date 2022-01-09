@@ -6,8 +6,8 @@ skip_tags: true
 environment:
     CFLAGS: /WX
     matrix:
-        - BUILD_SHARED_LIBS: ON
-        - BUILD_SHARED_LIBS: OFF
+        - BUILD_SHARED_LIBS: "ON"
+        - BUILD_SHARED_LIBS: "OFF"
 matrix:
     fast_finish: true
 build_script:
