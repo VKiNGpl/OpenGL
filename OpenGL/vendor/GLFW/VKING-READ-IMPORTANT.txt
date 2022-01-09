@@ -1,0 +1,7 @@
+Run command:
+git update-index --assume-unchanged .\GameEngine\vendor\GLFW
+to stop git from showing untracked changes
+
+Need to run:
+git update-index --no-assume-unchanged .\GameEngine\vendor\GLFW
+to undo.
