@@ -99,15 +99,15 @@ int main(void) {
 
 	constexpr auto triangle_size = TRIANGLE_VERTS * VERT_SIZE;
 	constexpr auto triangles_count = std::size(indices) / TRIANGLE_VERTS;
-	constexpr auto buffer_size = triangle_size * triangles_count * sizeof(positions[0]);
-	constexpr auto index_buffer_size = buffer_size / triangles_count;
+	constexpr auto buffer_size = static_cast<uint32_t>(VERT_SIZE * std::size(indices) * sizeof(positions[0]));
+	constexpr auto index_buffer_size = static_cast<uint32_t>(buffer_size / triangles_count);
 
 	uint32_t buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, buffer_size, positions, GL_STATIC_DRAW);
 
-	constexpr auto vertex_offset = VERT_SIZE * sizeof(positions[0]);
+	constexpr auto vertex_offset = static_cast<uint32_t>(VERT_SIZE * sizeof(positions[0]));
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertex_offset, nullptr);
 
