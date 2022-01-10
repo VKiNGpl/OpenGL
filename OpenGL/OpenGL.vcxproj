@@ -553,7 +553,9 @@
     <ClCompile Include="src\Application.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\Basic.frag" />
     <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\Basic.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\texture.PNG" />

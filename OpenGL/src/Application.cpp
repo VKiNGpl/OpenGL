@@ -2,6 +2,19 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+static std::string LoadShaderFile(const std::string& filepath)
+{
+	const std::ifstream stream(filepath);
+	std::stringstream buffer;
+
+	buffer << stream.rdbuf();
+
+	return buffer.str();
+}
 
 static uint32_t CompileShader(const uint32_t type, const std::string& source)
 {
@@ -84,27 +97,8 @@ int main(void) {
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
-	const std::string vertexShader = R"(
-		#version 330 core
-
-		layout(location = 0) in vec4 position;
-
-		void main()
-		{
-			gl_Position = position;
-		}
-	)";
-
-	const std::string fragmentShader = R"(
-		#version 330 core
-
-		layout(location = 0) out vec4 color;
-
-		void main()
-		{
-			color = vec4(1.0, 0.0, 0.0, 1.0);
-		}
-	)";
+	const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
+	const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
 
 	const uint32_t shader = CreateShader(vertexShader, fragmentShader);
 	glUseProgram(shader);

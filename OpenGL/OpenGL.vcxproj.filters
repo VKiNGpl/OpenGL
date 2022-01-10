@@ -1267,6 +1267,8 @@
     <None Include="res\shaders\Basic.shader">
       <Filter>res\shaders</Filter>
     </None>
+    <None Include="res\shaders\Basic.vert" />
+    <None Include="res\shaders\Basic.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\texture.PNG">
