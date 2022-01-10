@@ -41,6 +41,8 @@ project "OpenGL"
 		"%{prj.name}/vendor/glm/**.hpp",
 		"%{prj.name}/vendor/glm/**.inl",
 		"%{prj.name}/res/**.shader",
+		"%{prj.name}/res/**.vert",
+		"%{prj.name}/res/**.frag",
 		"%{prj.name}/res/**.PNG"
 	}
 

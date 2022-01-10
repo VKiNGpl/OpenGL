@@ -1264,11 +1264,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\Basic.frag">
+      <Filter>res\shaders</Filter>
+    </None>
     <None Include="res\shaders\Basic.shader">
       <Filter>res\shaders</Filter>
     </None>
-    <None Include="res\shaders\Basic.vert" />
-    <None Include="res\shaders\Basic.frag" />
+    <None Include="res\shaders\Basic.vert">
+      <Filter>res\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\texture.PNG">
