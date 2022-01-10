@@ -3,15 +3,29 @@
 
 #include <iostream>
 
-int main(void) {
-	GLFWwindow* window;
+static uint32_t CompileShader(const uint32_t type, const std::string& source)
+{
+	const uint32_t id = glCreateShader(type);
+	const char* src = source.c_str();
+	glShaderSource(id, 1, &src, nullptr);
 
+	return 0;
+}
+
+static int CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+{
+	uint32_t program = glCreateProgram();
+	uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+}
+
+int main(void) {
 	/* Initialize the library */
 	if (!glfwInit())
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello Triangle", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello Triangle", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -25,7 +39,7 @@ int main(void) {
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	float positions[6] = {
+	constexpr float positions[6] = {
 		-0.5f, -0.5f,
 		 0.0f,  0.5f,
 		 0.5f, -0.5f
@@ -37,7 +51,7 @@ int main(void) {
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {

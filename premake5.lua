@@ -39,7 +39,9 @@ project "OpenGL"
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/**.hpp",
-		"%{prj.name}/vendor/glm/**.inl"
+		"%{prj.name}/vendor/glm/**.inl",
+		"%{prj.name}/res/**.shader",
+		"%{prj.name}/res/**.PNG"
 	}
 
 	defines {
