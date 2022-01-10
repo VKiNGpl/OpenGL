@@ -14,7 +14,7 @@
  * \brief Calls __debugbreak() when function return is "false"\n
  * \param x function call being asserted
  */
-#define ASSERT(x) if (!(x)) __debugbreak();
+#define ASSERT(x) if (!(x)) __debugbreak()
 
 /**
  * \brief Clears GL Error flags before calling function "x" from the GL library.\n

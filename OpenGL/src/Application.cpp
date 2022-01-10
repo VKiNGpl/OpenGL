@@ -38,24 +38,24 @@ static uint32_t CompileShader(const uint32_t type, const std::string& source)
 {
 	GL_CALL(const uint32_t id = glCreateShader(type));
 	const char* src = source.c_str();
-	GL_CALL(glShaderSource(id, 1, &src, nullptr))
-	GL_CALL(glCompileShader(id))
+	GL_CALL(glShaderSource(id, 1, &src, nullptr));
+	GL_CALL(glCompileShader(id));
 
 	int32_t result;
-	GL_CALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result))
+	GL_CALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)
 	{
 		int32_t length;
-		GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length))
+		GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
 		const auto message = static_cast<char*>(_malloca(length * sizeof(char)));
-		GL_CALL(glGetShaderInfoLog(id, length, &length, message))
+		GL_CALL(glGetShaderInfoLog(id, length, &length, message));
 
 		std::cout << "Failed to compile " << 
 			(type == GL_VERTEX_SHADER ? "vertex" : "fragment") <<
 			" shader" << std::endl;
 		std::cout << message << std::endl;
 
-		GL_CALL(glDeleteShader(id))
+		GL_CALL(glDeleteShader(id));
 
 		return 0;
 	}
@@ -69,14 +69,14 @@ static uint32_t CreateShader(const std::string& vertexShader, const std::string&
 	const uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
 	const uint32_t fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-	GL_CALL(glAttachShader(program, vs))
-	GL_CALL(glAttachShader(program, fs))
+	GL_CALL(glAttachShader(program, vs));
+	GL_CALL(glAttachShader(program, fs));
 
-	GL_CALL(glLinkProgram(program))
-	GL_CALL(glValidateProgram(program))
+	GL_CALL(glLinkProgram(program));
+	GL_CALL(glValidateProgram(program));
 
-	GL_CALL(glDetachShader(program, vs))
-	GL_CALL(glDetachShader(program, fs))
+	GL_CALL(glDetachShader(program, vs));
+	GL_CALL(glDetachShader(program, fs));
 
 	return program;
 }
@@ -95,6 +95,8 @@ int main(void) {
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+
+	glfwSwapInterval(1);
 
 	if (glewInit() != GLEW_OK)
 		std::cout << "Error!" << std::endl;
@@ -119,31 +121,46 @@ int main(void) {
 	constexpr auto index_buffer_size = static_cast<uint32_t>(buffer_size / triangles_count);
 
 	uint32_t buffer;
-	GL_CALL(glGenBuffers(1, &buffer))
-	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer))
-	GL_CALL(glBufferData(GL_ARRAY_BUFFER, buffer_size, positions, GL_STATIC_DRAW))
+	GL_CALL(glGenBuffers(1, &buffer));
+	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
+	GL_CALL(glBufferData(GL_ARRAY_BUFFER, buffer_size, positions, GL_STATIC_DRAW));
 
 	constexpr auto vertex_offset = static_cast<uint32_t>(VERT_SIZE * sizeof(positions[0]));
-	GL_CALL(glEnableVertexAttribArray(0))
-	GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertex_offset, nullptr))
+	GL_CALL(glEnableVertexAttribArray(0));
+	GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertex_offset, nullptr));
 
 	uint32_t index_buffer;
-	GL_CALL(glGenBuffers(1, &index_buffer))
-	GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer))
-	GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_size, indices, GL_STATIC_DRAW))
+	GL_CALL(glGenBuffers(1, &index_buffer));
+	GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer));
+	GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_size, indices, GL_STATIC_DRAW));
 
 	const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
 	const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
 
 	const uint32_t shader = CreateShader(vertexShader, fragmentShader);
-	GL_CALL(glUseProgram(shader))
+	GL_CALL(glUseProgram(shader));
+
+	GL_CALL(const int location = glGetUniformLocation(shader, "u_Color"));
+	ASSERT(location != -1);
+
+	float red = 0.0f;
+	float increment = 0.05f;
 
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window))
+	{
 		/* Render here */
-		GL_CALL(glClear(GL_COLOR_BUFFER_BIT))
+		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-		GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr))
+		GL_CALL(glUniform4f(location, red, 0.3f, 1.0f, 1.0f));
+		GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
+
+		if (red > 1.0f)
+			increment = -0.01f;
+		else if (red < 0.0f)
+			increment = 0.01f;
+
+		red += increment;
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -152,7 +169,7 @@ int main(void) {
 		glfwPollEvents();
 	}
 
-	GL_CALL(glDeleteProgram(shader))
+	GL_CALL(glDeleteProgram(shader));
 	glfwTerminate();
 
 	return 0;
