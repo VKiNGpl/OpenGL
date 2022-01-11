@@ -24,9 +24,9 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 		const auto& [type, count, normalized] = elements[i];
 
 		GL_CALL(glEnableVertexAttribArray(0));
-		GL_CALL(glVertexAttribPointer(i, count, type, normalized, layout.GetStride(), offset));  // NOLINT(performance-no-int-to-ptr)
+		GL_CALL(glVertexAttribPointer(i, count, type, normalized, layout.GetStride(), offset));
 
-		offset = offset + count * LayoutElement::GetSizeOfType(type);  // NOLINT(bugprone-implicit-widening-of-multiplication-result)
+		offset = offset + static_cast<unsigned long long>(count) * LayoutElement::GetSizeOfType(type);
 	}
 }
 

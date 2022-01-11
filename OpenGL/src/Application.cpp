@@ -134,9 +134,6 @@ int main(void) {
 			/* Render here */
 			GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-			/*va.Bind();
-			ib.Bind();*/
-
 			GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
 
 			/* Swap front and back buffers */
