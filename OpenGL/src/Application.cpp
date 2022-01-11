@@ -3,6 +3,7 @@
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "GLProgram.h"
@@ -50,7 +51,6 @@ int main(void) {
 		};
 
 		GLProgram program("Basic", "res/shaders/");
-		program.Bind();
 
 		const VertexArray va;
 		const VertexBuffer vb(positions, sizeof(positions));
@@ -61,6 +61,8 @@ int main(void) {
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
+		Renderer renderer;
+
 		float red = 0.2f;
 		float step = 0.01f;
 		const float increment = step;
@@ -70,11 +72,12 @@ int main(void) {
 		while (!glfwWindowShouldClose(window))
 		{
 			/* Render here */
-			GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+			Renderer::Clear();
 
+			program.Bind();
 			program.SetUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
 
-			GL_CALL(glDrawElements(GL_TRIANGLES, 3 * VERT_SIZE, GL_UNSIGNED_INT, nullptr));
+			renderer.Draw(va, ib, program);
 
 			if (red > 1.0f)
 				step = decrement;

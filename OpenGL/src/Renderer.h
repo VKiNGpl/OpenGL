@@ -3,6 +3,10 @@
 // ReSharper disable once CppUnusedIncludeDirective
 #include <GL/glew.h>
 
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "GLProgram.h"
+
  /**
   * \brief Defines the size of each vertex
   */
@@ -25,3 +29,10 @@
 
 void GLClearError();
 bool GLLogCall(const char* function, const char* file, const unsigned int line);
+
+class Renderer
+{
+public:
+	static void Clear();
+	void Draw(const VertexArray& va, const IndexBuffer& ib, const GLProgram& program);
+};

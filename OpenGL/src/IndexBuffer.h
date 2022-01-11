@@ -5,12 +5,6 @@
  */
 class IndexBuffer  // NOLINT(cppcoreguidelines-special-member-functions)
 {
-private:
-	/**
-	 * \brief ID of this vertex buffer
-	 */
-	unsigned int m_RendererID{};
-	unsigned int m_Count{};
 public:
 	IndexBuffer(const unsigned int* data, unsigned int count);
 	~IndexBuffer();
@@ -29,4 +23,10 @@ public:
 	 * \return m_Count
 	 */
 	[[nodiscard]] unsigned int GetCount() const { return m_Count;  }
+private:
+	/**
+	 * \brief ID of this vertex buffer
+	 */
+	unsigned int m_RendererID{};
+	unsigned int m_Count{};
 };
