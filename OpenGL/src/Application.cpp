@@ -63,7 +63,7 @@ static uint32_t CompileShader(const uint32_t type, const std::string& source)
 	return id;
 }
 
-static uint32_t CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+static uint32_t CreateGLProgram(const std::string& vertexShader, const std::string& fragmentShader)
 {
 	GL_CALL(const uint32_t program = glCreateProgram());
 	const uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
@@ -86,6 +86,10 @@ int main(void) {
 	if (!glfwInit())
 		return -1;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	/* Create a windowed mode window and its OpenGL context */
 	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello Triangle", nullptr, nullptr);
 	if (!window) {
@@ -96,6 +100,7 @@ int main(void) {
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
+	// Sync screen refresh rate
 	glfwSwapInterval(1);
 
 	if (glewInit() != GLEW_OK)
@@ -104,30 +109,34 @@ int main(void) {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	constexpr float positions[] = {
-		-0.5f, -0.5f,
-		 0.5f, -0.5f, 
-		 0.5f,  0.5f,
-		-0.5f,  0.5f
+		-0.5f, -0.5f,	// vertex 0
+		 0.5f, -0.5f,	// vertex 1
+		 0.5f,  0.5f,	// vertex 2
+		-0.5f,  0.5f,	// vertex 3
 	};
-
-	const uint32_t indices[] = {
+	
+	constexpr uint32_t indices[] = {
 		0, 1, 2,
 		2, 3, 0
 	};
 
+	uint32_t vertex_array_obj;
+	GL_CALL(glGenVertexArrays(1, &vertex_array_obj));
+	GL_CALL(glBindVertexArray(vertex_array_obj));
+
 	constexpr auto triangle_size = TRIANGLE_VERTS * VERT_SIZE;
-	constexpr auto triangles_count = std::size(indices) / TRIANGLE_VERTS;
-	constexpr auto buffer_size = static_cast<uint32_t>(VERT_SIZE * std::size(indices) * sizeof(positions[0]));
-	constexpr auto index_buffer_size = static_cast<uint32_t>(buffer_size / triangles_count);
+	constexpr auto buffer_size = static_cast<uint32_t>(std::size(positions) * sizeof(positions[0]));
+	constexpr auto index_buffer_size = static_cast<uint32_t>(std::size(indices) * sizeof(indices[0]));
 
 	uint32_t buffer;
 	GL_CALL(glGenBuffers(1, &buffer));
 	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
 	GL_CALL(glBufferData(GL_ARRAY_BUFFER, buffer_size, positions, GL_STATIC_DRAW));
 
-	constexpr auto vertex_offset = static_cast<uint32_t>(VERT_SIZE * sizeof(positions[0]));
+	constexpr auto vertex_stride = static_cast<uint32_t>(VERT_SIZE * sizeof(positions[0]));
 	GL_CALL(glEnableVertexAttribArray(0));
-	GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertex_offset, nullptr));
+	GL_CALL(glVertexAttribPointer(0, VERT_SIZE, GL_FLOAT, GL_FALSE, vertex_stride, nullptr));	// This is where the currently bound buffer is linked to the currently bound vertex_array_obj
+	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
 	uint32_t index_buffer;
 	GL_CALL(glGenBuffers(1, &index_buffer));
@@ -137,14 +146,12 @@ int main(void) {
 	const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
 	const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
 
-	const uint32_t shader = CreateShader(vertexShader, fragmentShader);
-	GL_CALL(glUseProgram(shader));
+	const uint32_t gl_program = CreateGLProgram(vertexShader, fragmentShader);
+	GL_CALL(glUseProgram(gl_program));
 
-	GL_CALL(const int location = glGetUniformLocation(shader, "u_Color"));
-	ASSERT(location != -1);
-
-	float red = 0.0f;
-	float increment = 0.05f;
+	GL_CALL(const int color_uniform = glGetUniformLocation(gl_program, "u_Color"));
+	ASSERT(color_uniform != -1);
+	GL_CALL(glUniform4f(color_uniform, 0.2f, 0.3f, 1.0f, 1.0f));
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -152,15 +159,7 @@ int main(void) {
 		/* Render here */
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-		GL_CALL(glUniform4f(location, red, 0.3f, 1.0f, 1.0f));
 		GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
-
-		if (red > 1.0f)
-			increment = -0.01f;
-		else if (red < 0.0f)
-			increment = 0.01f;
-
-		red += increment;
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -169,7 +168,7 @@ int main(void) {
 		glfwPollEvents();
 	}
 
-	GL_CALL(glDeleteProgram(shader));
+	GL_CALL(glDeleteProgram(gl_program));
 	glfwTerminate();
 
 	return 0;
