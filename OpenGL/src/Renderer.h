@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GL/glew.h>
+
 /**
  * \brief Defines the number of vertices per triangle
  */
