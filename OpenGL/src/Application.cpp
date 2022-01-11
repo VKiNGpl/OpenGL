@@ -93,62 +93,61 @@ int main(void) {
 		std::cout << "Error!" << std::endl;
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
-
-	constexpr float positions[] = {
-		-0.5f, -0.5f,	// vertex 0
-		 0.5f, -0.5f,	// vertex 1
-		 0.5f,  0.5f,	// vertex 2
-		-0.5f,  0.5f,	// vertex 3
-	};
-	
-	constexpr unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	unsigned int vertex_array_obj;
-	GL_CALL(glGenVertexArrays(1, &vertex_array_obj));
-	GL_CALL(glBindVertexArray(vertex_array_obj));
-
-	constexpr auto triangle_size = TRIANGLE_VERTS * VERT_SIZE;
-	constexpr auto buffer_size = std::size(positions) * sizeof(positions[0]);
-	constexpr auto index_buffer_size = std::size(indices) * sizeof(indices[0]);
-	constexpr auto vertex_stride = VERT_SIZE * sizeof(positions[0]);
-
-	VertexBuffer vb(positions, buffer_size);
-
-	GL_CALL(glEnableVertexAttribArray(0));
-	GL_CALL(glVertexAttribPointer(0, VERT_SIZE, GL_FLOAT, GL_FALSE, vertex_stride, nullptr));	// This is where the currently bound buffer is linked to the currently bound vertex_array_obj
-	GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
-
-	IndexBuffer ib(indices, index_buffer_size);
-
-	const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
-	const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
-
-	const unsigned int gl_program = CreateGLProgram(vertexShader, fragmentShader);
-	GL_CALL(glUseProgram(gl_program));
-
-	GL_CALL(const int color_uniform = glGetUniformLocation(gl_program, "u_Color"));
-	ASSERT(color_uniform != -1);
-	GL_CALL(glUniform4f(color_uniform, 0.2f, 0.3f, 1.0f, 1.0f));
-
-	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
-		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+		constexpr float positions[] = {
+			-0.5f, -0.5f,	// vertex 0
+			 0.5f, -0.5f,	// vertex 1
+			 0.5f,  0.5f,	// vertex 2
+			-0.5f,  0.5f,	// vertex 3
+		};
 
-		GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
+		constexpr unsigned int indices[] = {
+			0, 1, 2,
+			2, 3, 0
+		};
 
-		/* Swap front and back buffers */
-		glfwSwapBuffers(window);
+		unsigned int vertex_array_obj;
+		GL_CALL(glGenVertexArrays(1, &vertex_array_obj));
+		GL_CALL(glBindVertexArray(vertex_array_obj));
 
-		/* Poll for and process events */
-		glfwPollEvents();
+		constexpr auto triangle_size = TRIANGLE_VERTS * VERT_SIZE;
+		constexpr auto vertex_stride = VERT_SIZE * sizeof(positions[0]);
+
+		VertexBuffer vb(positions, sizeof(positions));
+
+		GL_CALL(glEnableVertexAttribArray(0));
+		GL_CALL(glVertexAttribPointer(0, VERT_SIZE, GL_FLOAT, GL_FALSE, vertex_stride, nullptr));	// This is where the currently bound buffer is linked to the currently bound vertex_array_obj
+		GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
+		IndexBuffer ib(indices, sizeof(indices));
+
+		const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
+		const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
+
+		const unsigned int gl_program = CreateGLProgram(vertexShader, fragmentShader);
+		GL_CALL(glUseProgram(gl_program));
+
+		GL_CALL(const int color_uniform = glGetUniformLocation(gl_program, "u_Color"));
+		ASSERT(color_uniform != -1);
+		GL_CALL(glUniform4f(color_uniform, 0.2f, 0.3f, 1.0f, 1.0f));
+
+		/* Loop until the user closes the window */
+		while (!glfwWindowShouldClose(window))
+		{
+			/* Render here */
+			GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+
+			GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
+
+			/* Swap front and back buffers */
+			glfwSwapBuffers(window);
+
+			/* Poll for and process events */
+			glfwPollEvents();
+		}
+
+		GL_CALL(glDeleteProgram(gl_program));
 	}
-
-	GL_CALL(glDeleteProgram(gl_program));
 	glfwTerminate();
 
 	return 0;
