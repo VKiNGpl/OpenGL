@@ -1,11 +1,11 @@
-#include "Shader.h"
+#include "GLProgram.h"
 #include "Renderer.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-Shader::Shader(std::string filename, std::string filepath)
+GLProgram::GLProgram(std::string filename, std::string filepath)
 	: m_FileName(std::move(filename)), m_FilePath(std::move(filepath)), m_RenderID(0)
 {
 	const std::string vertexShader = LoadShaderFile(m_FileName + ".vert", m_FilePath);
@@ -14,12 +14,12 @@ Shader::Shader(std::string filename, std::string filepath)
 	m_RenderID = CreateGLProgram(vertexShader, fragmentShader);
 }
 
-Shader::~Shader()
+GLProgram::~GLProgram()
 {
 	GL_CALL(glDeleteProgram(m_RenderID));
 }
 
-std::string Shader::LoadShaderFile(const std::string& filename, const std::string& filepath)
+std::string GLProgram::LoadShaderFile(const std::string& filename, const std::string& filepath)
 {
 	const std::ifstream stream(filepath + filename);
 	std::stringstream buffer;
@@ -29,7 +29,7 @@ std::string Shader::LoadShaderFile(const std::string& filename, const std::strin
 	return buffer.str();
 }
 
-unsigned int Shader::CompileShader(const unsigned int type, const std::string& source)
+unsigned int GLProgram::CompileShader(const unsigned int type, const std::string& source)
 {
 	GL_CALL(const unsigned int id = glCreateShader(type));
 	const char* src = source.c_str();
@@ -58,7 +58,7 @@ unsigned int Shader::CompileShader(const unsigned int type, const std::string& s
 	return id;
 }
 
-unsigned int Shader::CreateGLProgram(const std::string& vertexShader, const std::string& fragmentShader)
+unsigned int GLProgram::CreateGLProgram(const std::string& vertexShader, const std::string& fragmentShader)
 {
 	GL_CALL(const unsigned int program = glCreateProgram());
 	const unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
@@ -76,17 +76,17 @@ unsigned int Shader::CreateGLProgram(const std::string& vertexShader, const std:
 	return program;
 }
 
-void Shader::SetUniform4f(const std::string& name, const float v0, const float v1, const float v2, const float v3)
+void GLProgram::SetUniform4f(const std::string& name, const float v0, const float v1, const float v2, const float v3)
 {
 	GL_CALL(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void Shader::SetUniform1f(const std::string& name, const float value)
+void GLProgram::SetUniform1f(const std::string& name, const float value)
 {
 	GL_CALL(glUniform1f(GetUniformLocation(name), value));
 }
 
-int Shader::GetUniformLocation(const std::string& name)
+int GLProgram::GetUniformLocation(const std::string& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];
@@ -99,12 +99,12 @@ int Shader::GetUniformLocation(const std::string& name)
 	return location;
 }
 
-void Shader::Bind() const
+void GLProgram::Bind() const
 {
 	GL_CALL(glUseProgram(m_RenderID));
 }
 
-void Shader::Unbind()
+void GLProgram::Unbind()
 {
 	GL_CALL(glUseProgram(0));
 }

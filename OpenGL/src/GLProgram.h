@@ -3,11 +3,11 @@
 #include <string>
 #include <unordered_map>
 
-class Shader  // NOLINT(cppcoreguidelines-special-member-functions)
+class GLProgram  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 public:
-	Shader(std::string filename, std::string filepath);
-	~Shader();
+	GLProgram(std::string filename, std::string filepath);
+	~GLProgram();
 
 	/**
 	 * \brief Sets up a Vec4 uniform\n

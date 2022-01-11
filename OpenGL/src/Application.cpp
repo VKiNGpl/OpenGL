@@ -5,7 +5,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
-#include "Shader.h"
+#include "GLProgram.h"
 
 #include <iostream>
 #include <fstream>
@@ -49,8 +49,8 @@ int main(void) {
 			2, 3, 0
 		};
 
-		Shader shader("Basic", "res/shaders/");
-		shader.Bind();
+		GLProgram program("Basic", "res/shaders/");
+		program.Bind();
 
 		const VertexArray va;
 		const VertexBuffer vb(positions, sizeof(positions));
@@ -72,7 +72,7 @@ int main(void) {
 			/* Render here */
 			GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-			shader.SetUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
+			program.SetUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
 
 			GL_CALL(glDrawElements(GL_TRIANGLES, 3 * VERT_SIZE, GL_UNSIGNED_INT, nullptr));
 
