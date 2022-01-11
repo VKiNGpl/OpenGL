@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "Renderer.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -7,22 +7,6 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
-static void GLClearError()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char* function, const char* file, const uint32_t line)
-{
-	if (const GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error] (" << error << "): " << function << 
-			" " << file << ":" << line << std::endl;
-		return false;
-	}
-	return true;
-}
 
 static std::string LoadShaderFile(const char* filepath)
 {
@@ -91,7 +75,7 @@ int main(void) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello Triangle", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "OpenGL Project", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		return -1;
