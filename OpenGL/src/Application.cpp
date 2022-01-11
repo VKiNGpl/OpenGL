@@ -5,68 +5,10 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Shader.h"
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <string>
-
-static std::string LoadShaderFile(const char* filepath)
-{
-	const std::ifstream stream(filepath);
-	std::stringstream buffer;
-
-	buffer << stream.rdbuf();
-
-	return buffer.str();
-}
-
-static unsigned int CompileShader(const unsigned int type, const std::string& source)
-{
-	GL_CALL(const unsigned int id = glCreateShader(type));
-	const char* src = source.c_str();
-	GL_CALL(glShaderSource(id, 1, &src, nullptr));
-	GL_CALL(glCompileShader(id));
-
-	int32_t result;
-	GL_CALL(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
-	if (result == GL_FALSE)
-	{
-		int32_t length;
-		GL_CALL(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-		const auto message = static_cast<char*>(_malloca(length * sizeof(char)));
-		GL_CALL(glGetShaderInfoLog(id, length, &length, message));
-
-		std::cout << "Failed to compile " << 
-			(type == GL_VERTEX_SHADER ? "vertex" : "fragment") <<
-			" shader" << std::endl;
-		std::cout << message << std::endl;
-
-		GL_CALL(glDeleteShader(id));
-
-		return 0;
-	}
-
-	return id;
-}
-
-static unsigned int CreateGLProgram(const std::string& vertexShader, const std::string& fragmentShader)
-{
-	GL_CALL(const unsigned int program = glCreateProgram());
-	const unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	const unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-	GL_CALL(glAttachShader(program, vs));
-	GL_CALL(glAttachShader(program, fs));
-
-	GL_CALL(glLinkProgram(program));
-	GL_CALL(glValidateProgram(program));
-
-	GL_CALL(glDetachShader(program, vs));
-	GL_CALL(glDetachShader(program, fs));
-
-	return program;
-}
 
 int main(void) {
 	/* Initialize the library */
@@ -107,7 +49,8 @@ int main(void) {
 			2, 3, 0
 		};
 
-		constexpr auto triangle_size = TRIANGLE_VERTS * VERT_SIZE;
+		Shader shader("Basic", "res/shaders/");
+		shader.Bind();
 
 		const VertexArray va;
 		const VertexBuffer vb(positions, sizeof(positions));
@@ -116,17 +59,12 @@ int main(void) {
 		layout.Push<float>(VERT_SIZE);
 		va.AddBuffer(vb, layout);
 
-		IndexBuffer ib(indices, sizeof(indices));
+		const IndexBuffer ib(indices, sizeof(indices));
 
-		const std::string vertexShader = LoadShaderFile("res/shaders/Basic.vert");
-		const std::string fragmentShader = LoadShaderFile("res/shaders/Basic.frag");
-
-		const unsigned int gl_program = CreateGLProgram(vertexShader, fragmentShader);
-		GL_CALL(glUseProgram(gl_program));
-
-		GL_CALL(const int color_uniform = glGetUniformLocation(gl_program, "u_Color"));
-		ASSERT(color_uniform != -1);
-		GL_CALL(glUniform4f(color_uniform, 0.2f, 0.3f, 1.0f, 1.0f));
+		float red = 0.2f;
+		float step = 0.01f;
+		const float increment = step;
+		const float decrement = -increment;
 
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
@@ -134,7 +72,16 @@ int main(void) {
 			/* Render here */
 			GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-			GL_CALL(glDrawElements(GL_TRIANGLES, triangle_size, GL_UNSIGNED_INT, nullptr));
+			shader.SetUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
+
+			GL_CALL(glDrawElements(GL_TRIANGLES, 3 * VERT_SIZE, GL_UNSIGNED_INT, nullptr));
+
+			if (red > 1.0f)
+				step = decrement;
+			else if (red < 0.2f)
+				step = increment;
+
+			red += step;
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
@@ -142,8 +89,6 @@ int main(void) {
 			/* Poll for and process events */
 			glfwPollEvents();
 		}
-
-		GL_CALL(glDeleteProgram(gl_program));
 	}
 	glfwTerminate();
 
