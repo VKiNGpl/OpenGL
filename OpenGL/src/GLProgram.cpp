@@ -76,14 +76,20 @@ unsigned int GLProgram::CreateGLProgram(const std::string& vertexShader, const s
 	return program;
 }
 
-void GLProgram::SetUniform4f(const std::string& name, const float v0, const float v1, const float v2, const float v3)
+void GLProgram::SetUniform1i(const std::string& name, const int value)
 {
-	GL_CALL(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+	GL_CALL(glUniform1i(GetUniformLocation(name), value));
+
 }
 
 void GLProgram::SetUniform1f(const std::string& name, const float value)
 {
 	GL_CALL(glUniform1f(GetUniformLocation(name), value));
+}
+
+void GLProgram::SetUniform4f(const std::string& name, const float v0, const float v1, const float v2, const float v3)
+{
+	GL_CALL(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
 int GLProgram::GetUniformLocation(const std::string& name)
