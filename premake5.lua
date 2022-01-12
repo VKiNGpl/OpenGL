@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "OpenGL/vendor/GLFW/include"
 IncludeDir["GLEW"] = "OpenGL/vendor/GLEW/include"
 IncludeDir["glm"]  = "OpenGL/vendor/glm"
+IncludeDir["stb"]  = "OpenGL/vendor/stb_image"
 
 group "Dependencies"
 	include "OpenGL/vendor/GLFW"
@@ -40,6 +41,7 @@ project "OpenGL"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/**.hpp",
 		"%{prj.name}/vendor/glm/**.inl",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/res/**.shader",
 		"%{prj.name}/res/**.vert",
 		"%{prj.name}/res/**.frag",
@@ -56,7 +58,8 @@ project "OpenGL"
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb}"
 	}
 
 	links

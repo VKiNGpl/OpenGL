@@ -7,9 +7,9 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "GLProgram.h"
+#include "Texture.h"
 
 #include <iostream>
-#include <fstream>
 
 int main(void) {
 	/* Initialize the library */
@@ -60,6 +60,9 @@ int main(void) {
 		va.AddBuffer(vb, layout);
 
 		const IndexBuffer ib(indices, sizeof(indices));
+
+		const Texture texture("res/textures/texture.PNG");
+		texture.Bind();
 
 		Renderer renderer;
 
