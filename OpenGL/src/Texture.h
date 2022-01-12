@@ -13,8 +13,6 @@ public:
 
 	[[nodiscard]] int GetWidth() const { return m_Width; }
 	[[nodiscard]] int GetHeight() const { return m_Height; }
-	[[nodiscard]] int GetBPP() const { return m_BPP; }
-
 private:
 	unsigned int m_RendererID;
 	std::string m_FilePath;
