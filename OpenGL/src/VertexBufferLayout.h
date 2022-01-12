@@ -11,7 +11,7 @@ struct LayoutElement
 	unsigned int count;
 	unsigned char normalized;
 
-	static unsigned int GetSizeOfType(unsigned int type)
+	static unsigned int GetSizeOfType(const unsigned int type)
 	{
 		switch (type)
 		{
@@ -29,9 +29,6 @@ struct LayoutElement
 
 class VertexBufferLayout
 {
-private:
-	std::vector<LayoutElement> m_Elements;
-	unsigned int m_Stride;
 public:
 	VertexBufferLayout()
 		: m_Stride(0) {}
@@ -65,4 +62,7 @@ public:
 
 	[[nodiscard]] std::vector<LayoutElement> GetElements() const { return m_Elements; }
 	[[nodiscard]] unsigned int GetStride() const { return m_Stride; }
+private:
+	std::vector<LayoutElement> m_Elements;
+	unsigned int m_Stride;
 };
