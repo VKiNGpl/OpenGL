@@ -10,20 +10,26 @@ public:
 	~GLProgram();
 
 	/**
-	 * \brief Sets up a Vec4 uniform\n
+	 * \brief Sets up a Vec1 int uniform\n
 	 * \param name name of the uniform
-	 * \param v0 attribute 0 of uniform
-	 * \param v1 attribute 1 of uniform
-	 * \param v2 attribute 2 of uniform
-	 * \param v3 attribute 3 of uniform
+	 * \param value attribute 0 of uniform (int)
 	 */
-	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+	void SetUniform1i(const std::string& name, int value);
 	/**
-	 * \brief Sets up a Vec1 uniform\n
+	 * \brief Sets up a Vec1 float uniform\n
 	 * \param name name of the uniform
-	 * \param value attribute 0 of uniform
+	 * \param value attribute 0 of uniform (float)
 	 */
 	void SetUniform1f(const std::string& name, float value);
+	/**
+	 * \brief Sets up a Vec4 float uniform\n
+	 * \param name name of the uniform
+	 * \param v0 attribute 0 of uniform (float)
+	 * \param v1 attribute 1 of uniform (float)
+	 * \param v2 attribute 2 of uniform (float)
+	 * \param v3 attribute 3 of uniform (float)
+	 */
+	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 
 	void Bind() const;
 	static void Unbind();

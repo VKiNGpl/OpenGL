@@ -39,10 +39,10 @@ int main(void) {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	{
 		constexpr float positions[] = {
-			-0.5f, -0.5f,	// vertex 0
-			 0.5f, -0.5f,	// vertex 1
-			 0.5f,  0.5f,	// vertex 2
-			-0.5f,  0.5f,	// vertex 3
+			-0.5f, -0.5f, 0.0f, 0.0f,	// vertex 0
+			 0.5f, -0.5f, 1.0f, 0.0f,	// vertex 1
+			 0.5f,  0.5f, 1.0f, 1.0f,	// vertex 2
+			-0.5f,  0.5f, 0.0f, 1.0f	// vertex 3
 		};
 
 		constexpr unsigned int indices[] = {
@@ -50,26 +50,27 @@ int main(void) {
 			2, 3, 0
 		};
 
-		GLProgram program("Basic", "res/shaders/");
+		GL_CALL(glEnable(GL_BLEND));
+		GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 		const VertexArray va;
 		const VertexBuffer vb(positions, sizeof(positions));
 
 		VertexBufferLayout layout;
-		layout.Push<float>(VERT_SIZE);
+		layout.Push<float>(2);
+		layout.Push<float>(2);
 		va.AddBuffer(vb, layout);
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
+		GLProgram program("Basic", "res/shaders/");
+		program.Bind();
+
 		const Texture texture("res/textures/texture.PNG");
 		texture.Bind();
+		program.SetUniform1i("u_Texture", 0);	// value parameter must match the currently bound texture slot
 
 		Renderer renderer;
-
-		float red = 0.2f;
-		float step = 0.01f;
-		const float increment = step;
-		const float decrement = -increment;
 
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
@@ -77,17 +78,7 @@ int main(void) {
 			/* Render here */
 			Renderer::Clear();
 
-			program.Bind();
-			program.SetUniform4f("u_Color", red, 0.3f, 0.8f, 1.0f);
-
 			renderer.Draw(va, ib, program);
-
-			if (red > 1.0f)
-				step = decrement;
-			else if (red < 0.2f)
-				step = increment;
-
-			red += step;
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);

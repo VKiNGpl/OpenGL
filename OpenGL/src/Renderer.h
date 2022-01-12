@@ -7,11 +7,6 @@
 #include "IndexBuffer.h"
 #include "GLProgram.h"
 
- /**
-  * \brief Defines the size of each vertex
-  */
-#define VERT_SIZE 2
-
   /**
    * \brief Calls __debugbreak() when function return is "false"\n
    * \param x function call being asserted
