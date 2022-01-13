@@ -22,7 +22,6 @@ IncludeDir["stb"]   = "OpenGL/vendor/stb_image"
 
 group "Dependencies"
 	include "OpenGL/vendor/GLFW"
-	include "OpenGL/vendor/imgui"
 group ""
 
 project "OpenGL"
@@ -70,7 +69,6 @@ project "OpenGL"
 	{
 		"opengl32.lib",
 		"glew32s.lib",
-		"ImGui",
 		"GLFW"
 	}
 
