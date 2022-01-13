@@ -23,7 +23,7 @@ int main(void) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	GLFWwindow* window = glfwCreateWindow(640, 480, "OpenGL Project", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(960, 540, "OpenGL Project", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -41,10 +41,10 @@ int main(void) {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	{
 		constexpr float positions[] = {
-			-0.5f, -0.5f, 0.0f, 0.0f,	// vertex 0
-			 0.5f, -0.5f, 1.0f, 0.0f,	// vertex 1
-			 0.5f,  0.5f, 1.0f, 1.0f,	// vertex 2
-			-0.5f,  0.5f, 0.0f, 1.0f	// vertex 3
+			100.0f, 100.0f, 0.0f, 0.0f,	// vertex 0
+			200.0f, 100.0f, 1.0f, 0.0f,	// vertex 1
+			200.0f, 200.0f, 1.0f, 1.0f,	// vertex 2
+			100.0f, 200.0f, 0.0f, 1.0f	// vertex 3
 		};
 
 		constexpr unsigned int indices[] = {
@@ -65,7 +65,7 @@ int main(void) {
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
-		const glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
+		const glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
 
 		GLProgram program("Basic", "res/shaders/");
 		program.Bind();
