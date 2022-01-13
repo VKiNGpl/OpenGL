@@ -65,7 +65,7 @@ int main(void) {
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
-		const glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+		const glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -0.75f, 0.75f, -1.0f, 1.0f);
 
 		GLProgram program("Basic", "res/shaders/");
 		program.Bind();
