@@ -92,6 +92,12 @@ void GLProgram::SetUniform4f(const std::string& name, const float v0, const floa
 	GL_CALL(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
+
+void GLProgram::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
+{
+	GL_CALL(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+}
+
 int GLProgram::GetUniformLocation(const std::string& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())

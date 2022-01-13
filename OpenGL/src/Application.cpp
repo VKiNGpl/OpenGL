@@ -1,5 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
@@ -63,12 +65,15 @@ int main(void) {
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
+		const glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
 		GLProgram program("Basic", "res/shaders/");
 		program.Bind();
 
 		const Texture texture("res/textures/texture.PNG");
 		texture.Bind();
 		program.SetUniform1i("u_Texture", 0);	// value parameter must match the currently bound texture slot
+		program.SetUniformMat4f("u_MVP", proj);
 
 		Renderer renderer;
 
