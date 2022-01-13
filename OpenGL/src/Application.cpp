@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
@@ -81,13 +83,44 @@ int main(void) {
 
 		Renderer renderer;
 
+		ImGui::CreateContext();
+		ImGui_ImplGlfwGL3_Init(window, true);
+		ImGui::StyleColorsDark();
+
+		bool show_demo_window = true;
+		bool show_another_window = false;
+		auto clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
 			/* Render here */
 			Renderer::Clear();
 
+			ImGui_ImplGlfwGL3_NewFrame();
+
 			renderer.Draw(va, ib, program);
+
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+				ImGui::Text("Hello, world!");												// Display some text (you can use a format string too)
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);						// Edit 1 float using a slider from 0.0f to 1.0f    
+				ImGui::ColorEdit3("clear color", reinterpret_cast<float*>(&clear_color));	// Edit 3 floats representing a color
+
+				ImGui::Checkbox("Demo Window", &show_demo_window);							// Edit bools storing our windows open/close state
+				ImGui::Checkbox("Another Window", &show_another_window);
+
+				if (ImGui::Button("Button"))												// Buttons return true when clicked (NB: most widgets return true when edited/activated)
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);  // NOLINT(clang-diagnostic-double-promotion)
+			}
+
+			ImGui::Render();
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
@@ -96,6 +129,9 @@ int main(void) {
 			glfwPollEvents();
 		}
 	}
+	ImGui_ImplGlfwGL3_Shutdown();
+	ImGui::DestroyContext();
+
 	glfwTerminate();
 
 	return 0;
