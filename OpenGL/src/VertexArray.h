@@ -6,8 +6,6 @@ class VertexBufferLayout;
 
 class VertexArray  // NOLINT(cppcoreguidelines-special-member-functions)
 {
-private:
-	unsigned int m_RendererID{};
 public:
 	VertexArray();
 	~VertexArray();
@@ -16,4 +14,6 @@ public:
 
 	void Bind() const;
 	static void Unbind();
+private:
+	unsigned int m_RendererID{};
 };
