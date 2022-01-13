@@ -13,13 +13,16 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "OpenGL/vendor/GLFW/include"
-IncludeDir["GLEW"] = "OpenGL/vendor/GLEW/include"
-IncludeDir["glm"]  = "OpenGL/vendor/glm"
-IncludeDir["stb"]  = "OpenGL/vendor/stb_image"
+IncludeDir["ImGui"] = "OpenGL/vendor/imgui"
+IncludeDir["GLFW"]  = "OpenGL/vendor/GLFW/include"
+IncludeDir["GLEW"]  = "OpenGL/vendor/GLEW/include"
+IncludeDir["glm"]   = "OpenGL/vendor/glm"
+IncludeDir["stb"]   = "OpenGL/vendor/stb_image"
+
 
 group "Dependencies"
 	include "OpenGL/vendor/GLFW"
+	include "OpenGL/vendor/imgui"
 group ""
 
 project "OpenGL"
@@ -55,18 +58,20 @@ project "OpenGL"
 
 	includedirs
 	{
-		"%{prj.name}/src",
+		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb}"
+		"%{IncludeDir.stb}",
+		"%{prj.name}/src"
 	}
 
 	links
 	{
-		"GLFW",
+		"opengl32.lib",
 		"glew32s.lib",
-		"opengl32.lib"
+		"ImGui",
+		"GLFW"
 	}
 
 	libdirs
