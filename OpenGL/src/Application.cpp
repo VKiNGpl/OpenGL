@@ -65,7 +65,11 @@ int main(void) {
 
 		const IndexBuffer ib(indices, sizeof(indices));
 
-		const glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+		const glm::mat4 proj  = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+		const glm::mat4 view  = glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f,0.0f ,0.0f ));
+		const glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 200.0f, 0.0f));
+
+		const glm::mat4 mvp = proj * view * model;
 
 		GLProgram program("Basic", "res/shaders/");
 		program.Bind();
@@ -73,7 +77,7 @@ int main(void) {
 		const Texture texture("res/textures/texture.PNG");
 		texture.Bind();
 		program.SetUniform1i("u_Texture", 0);	// value parameter must match the currently bound texture slot
-		program.SetUniformMat4f("u_MVP", proj);
+		program.SetUniformMat4f("u_MVP", mvp);
 
 		Renderer renderer;
 
