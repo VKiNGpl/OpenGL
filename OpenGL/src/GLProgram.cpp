@@ -76,29 +76,49 @@ unsigned int GLProgram::CreateGLProgram(const std::string& vertexShader, const s
 	return program;
 }
 
-void GLProgram::SetUniform1i(const std::string& name, const int value)
+void GLProgram::SetUniform1i(const std::string& name, const int value) const
 {
-	GL_CALL(glUniform1i(GetUniformLocation(name), value));
-
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniform1i(location, value));
 }
 
-void GLProgram::SetUniform1f(const std::string& name, const float value)
+void GLProgram::SetUniform1f(const std::string& name, const float value) const
 {
-	GL_CALL(glUniform1f(GetUniformLocation(name), value));
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniform1f(location, value));
 }
 
-void GLProgram::SetUniform4f(const std::string& name, const float v0, const float v1, const float v2, const float v3)
+void GLProgram::SetUniform2f(const std::string& name, const glm::vec2& value) const
 {
-	GL_CALL(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniform2f(location, value.x, value.y));
 }
 
-
-void GLProgram::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
+void GLProgram::SetUniform3f(const std::string& name, const glm::vec3& value) const
 {
-	GL_CALL(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniform3f(location, value.x, value.y, value.z));
 }
 
-int GLProgram::GetUniformLocation(const std::string& name)
+void GLProgram::SetUniform4f(const std::string& name, const glm::vec4& value) const
+{
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniform4f(location, value.x, value.y, value.z, value.w));
+}
+
+void GLProgram::SetUniformMat3f(const std::string& name, const glm::mat3& matrix) const
+{
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniformMatrix3fv(location, 1, GL_FALSE, &matrix[0][0]));
+}
+
+void GLProgram::SetUniformMat4f(const std::string& name, const glm::mat4& matrix) const
+{
+	const int location = GetUniformLocation(name);
+	GL_CALL(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
+}
+
+int GLProgram::GetUniformLocation(const std::string& name) const
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];
