@@ -1,6 +1,6 @@
 #pragma once
 
-#include "test.h"
+#include "Test.h"
 
 namespace test
 {
@@ -8,7 +8,6 @@ namespace test
 	{
 	public:
 		TestClearColor();
-		~TestClearColor() override;
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;

@@ -5,8 +5,6 @@
 
 #include "tests/TestClearColor.h"
 
-#include <iostream>
-
 int main(void) {
 	if (!glfwInit())
 		return -1;
@@ -34,22 +32,38 @@ int main(void) {
 	ImGui_ImplGlfwGL3_Init(window, true);
 	ImGui::StyleColorsDark();
 
-	test::TestClearColor test;
+	test::Test* currentTest = nullptr;
+	const auto testMenu = new test::TestMenu(currentTest);
+	currentTest = testMenu;
+
+	testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 
 	while (!glfwWindowShouldClose(window))
 	{
-		test.OnUpdate(0.0f);
-		test.OnRender();
-
 		ImGui_ImplGlfwGL3_NewFrame();
-		test.OnImGuiRender();
+		if (currentTest)
+		{
+			currentTest->OnUpdate(0.0f);
+			currentTest->OnRender();
 
+			ImGui::Begin("Test");
+			if (currentTest != testMenu && ImGui::Button("<-"))
+			{
+				delete currentTest;
+				currentTest = testMenu;
+			}
+			currentTest->OnImGuiRender();
+			ImGui::End();
+		}
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+	if (currentTest != testMenu)
+		delete testMenu;
+	delete currentTest;
 
 	ImGui_ImplGlfwGL3_Shutdown();
 	ImGui::DestroyContext();
