@@ -578,14 +578,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Basic.frag" />
-    <None Include="res\shaders\Basic.shader" />
-    <None Include="res\shaders\Basic.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\textures\texture.PNG" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>

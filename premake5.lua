@@ -33,9 +33,6 @@ project "OpenGL"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
---	pchheader "gepch.h"
---	pchsource "OpenGL/src/gepch.cpp"
-
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -44,11 +41,7 @@ project "OpenGL"
 		"%{prj.name}/vendor/imgui/**.cpp",
 		"%{prj.name}/vendor/glm/**.hpp",
 		"%{prj.name}/vendor/glm/**.inl",
-		"%{prj.name}/vendor/stb_image/**.cpp",
-		"%{prj.name}/res/**.shader",
-		"%{prj.name}/res/**.vert",
-		"%{prj.name}/res/**.frag",
-		"%{prj.name}/res/**.PNG"
+		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
 
 	defines {

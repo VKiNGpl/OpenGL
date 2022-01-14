@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="res">
-      <UniqueIdentifier>{4FA5880B-BBAE-887C-442A-9F7CB032947C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="res\shaders">
-      <UniqueIdentifier>{4841F028-B4F6-681E-3DEB-62F5A99F5F22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="res\textures">
-      <UniqueIdentifier>{227C1C83-0EDF-AB27-B764-E4DDA3A677AA}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
@@ -1343,21 +1334,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\Basic.frag">
-      <Filter>res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\Basic.shader">
-      <Filter>res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\Basic.vert">
-      <Filter>res\shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\textures\texture.PNG">
-      <Filter>res\textures</Filter>
-    </Image>
   </ItemGroup>
 </Project>
