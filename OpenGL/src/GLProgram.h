@@ -54,6 +54,7 @@ public:
 	  */
 	void SetUniformMat4f(const std::string& name, const glm::mat4& matrix) const;
 
+	unsigned int GetRendererID() const { return m_RenderID; }
 	void Bind() const;
 	static void Unbind();
 private:
