@@ -1296,6 +1296,8 @@
     <ClInclude Include="vendor\imgui\stb_truetype.h">
       <Filter>vendor\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\test.h" />
+    <ClInclude Include="src\tests\TestClearColor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -1334,5 +1336,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestClearColor.cpp" />
   </ItemGroup>
 </Project>
