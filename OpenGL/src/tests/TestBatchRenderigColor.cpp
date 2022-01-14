@@ -15,11 +15,11 @@ namespace test
 			-150.0f, -50.0f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// Quad 1 vertex 0 (vec3 pos, vec4 color)
 			 -50.0f, -50.0f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// Quad 1 vertex 1 (vec3 pos, vec4 color)
 			 -50.0f,  50.0f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// Quad 1 vertex 2 (vec3 pos, vec4 color)
-			-150.0f,  50.0f, 0.0f,	0.18f, 0.6f, 0.96f, 1.0f,	// Quad 1 vertex 3 (vec3 pos, vec4 color)
+			-150.0f,  50.0f, 0.0f,	 0.0f, 0.0f,  0.0f, 1.0f,	// Quad 1 vertex 3 (vec3 pos, vec4 color)
 
 			  50.0f, -50.0f, 0.0f,	1.0f, 0.93f, 0.24f, 1.0f,	// Quad 2 vertex 0 (vec3 pos, vec4 color)
 			 150.0f, -50.0f, 0.0f,	1.0f, 0.93f, 0.24f, 1.0f,	// Quad 2 vertex 1 (vec3 pos, vec4 color)
-			 150.0f,  50.0f, 0.0f,	1.0f, 0.93f, 0.24f, 1.0f,	// Quad 2 vertex 2 (vec3 pos, vec4 color)
+			 150.0f,  50.0f, 0.0f,	0.0f,  0.0f,  0.0f, 1.0f,	// Quad 2 vertex 2 (vec3 pos, vec4 color)
 			  50.0f,  50.0f, 0.0f,	1.0f, 0.93f, 0.24f, 1.0f	// Quad 2 vertex 3 (vec3 pos, vec4 color)
 		};
 
