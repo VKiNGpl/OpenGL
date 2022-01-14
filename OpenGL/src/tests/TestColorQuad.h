@@ -3,14 +3,13 @@
 #include "Test.h"
 
 #include "Renderer.h"
-#include "Texture.h"
 
 namespace test
 {
-	class TestTexture2D final : public Test  // NOLINT(cppcoreguidelines-special-member-functions)
+	class TestColorQuad final : public Test  // NOLINT(cppcoreguidelines-special-member-functions)
 	{
 	public:
-		TestTexture2D();
+		TestColorQuad();
 
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
@@ -20,9 +19,8 @@ namespace test
 		std::unique_ptr<VertexBuffer> m_VertexBuffer;
 		std::unique_ptr <IndexBuffer> m_IndexBuffer;
 		std::unique_ptr <GLProgram> m_Program;
-		std::unique_ptr<Texture> m_Texture;
 
 		glm::mat4 m_Proj, m_View;
-		glm::vec3 m_TranslationA, m_TranslationB;
+		glm::vec3 m_QuadTranslation;
 	};
 }

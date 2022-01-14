@@ -5,6 +5,8 @@
 
 #include "tests/TestClearColor.h"
 #include "tests/TestTexture2D.h"
+#include "tests/TestColorQuad.h"
+#include "tests/TestBatchRendering.h"
 
 int main(void) {
 	if (!glfwInit())
@@ -39,6 +41,8 @@ int main(void) {
 
 	testMenu->RegisterTest<test::TestClearColor>("Clear Color");
 	testMenu->RegisterTest<test::TestTexture2D>("2D Texture");
+	testMenu->RegisterTest<test::TestColorQuad>("Color Quad");
+	testMenu->RegisterTest<test::TestBatchRendering>("Batch Rendering");
 
 	while (!glfwWindowShouldClose(window))
 	{
