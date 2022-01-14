@@ -50,9 +50,6 @@ namespace test
 		m_Texture = std::make_unique<Texture>("res/textures/texture.PNG");
 		m_AltTexture = std::make_unique<Texture>("res/textures/alt_texture.PNG");
 
-		/*m_Program->SetUniform1i("u_Texture", 0);
-		m_Program->SetUniform1i("u_AltTexture", 1);*/
-
 		const auto loc = glGetUniformLocation(m_Program->GetRendererID(), "u_Textures");
 		constexpr int samplers[2] = { 0, 1 };
 		glUniform1iv(loc, 2, samplers);
