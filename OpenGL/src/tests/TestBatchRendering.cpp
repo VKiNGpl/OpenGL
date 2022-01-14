@@ -12,15 +12,23 @@ namespace test
 			m_QuadTranslation(480, 270, 0)
 	{
 		constexpr float positions[] = {
-			-50.0f, -50.0f, 0.0f,	// vertex 0
-			 50.0f, -50.0f, 0.0f,	// vertex 1
-			 50.0f,  50.0f, 0.0f,	// vertex 2
-			-50.0f,  50.0f, 0.0f	// vertex 3
+			-150.0f, -50.0f, 0.0f,	// Quad 1 vertex 0
+			 -50.0f, -50.0f, 0.0f,	// Quad 1 vertex 1
+			 -50.0f,  50.0f, 0.0f,	// Quad 1 vertex 2
+			-150.0f,  50.0f, 0.0f,	// Quad 1 vertex 3
+
+			  50.0f, -50.0f, 0.0f,	// Quad 2 vertex 0
+			 150.0f, -50.0f, 0.0f,	// Quad 2 vertex 1
+			 150.0f,  50.0f, 0.0f,	// Quad 2 vertex 2
+			  50.0f,  50.0f, 0.0f	// Quad 2 vertex 3
 		};
 
 		constexpr unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
+			0, 1, 2,	// Quad 1 (Triangle 1/2)
+			2, 3, 0,	// Quad 1 (Triangle 2/2)
+
+			4, 5, 6,	// Quad 2 (Triangle 1/2)
+			6, 7, 4		// Quad 2 (Triangle 2/2)
 		};
 
 		m_VAO = std::make_unique<VertexArray>();
