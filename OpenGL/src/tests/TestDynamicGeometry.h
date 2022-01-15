@@ -9,9 +9,9 @@ namespace test
 {
 	struct Vertex
 	{
-		float Position[3];
-		float Color[4];
-		float TexCoords[2];
+		glm::vec3 Position;
+		glm::vec4 Color;
+		glm::vec2 TexCoords;
 		float TexID;
 	};
 
@@ -32,8 +32,8 @@ namespace test
 		std::unique_ptr<Texture> m_Texture, m_AltTexture;
 
 		glm::mat4 m_Proj, m_View;
-		glm::vec3 m_QuadTranslation;
+		glm::vec3 m_CamPosition;
 		glm::vec2 m_QuadPosition;
-		static std::array<Vertex, 4> CreateQuad(float x, float y, float textureID);
+		static Vertex* CreateQuad(Vertex* target, float x, float y, float textureID);
 	};
 }
