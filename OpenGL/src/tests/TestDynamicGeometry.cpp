@@ -55,24 +55,10 @@ namespace test
 
 	void TestDynamicGeometry::OnRender()
 	{
-		// Set dynamic vertex buffer
-		//float vertices[] = {
-		//	-150.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 0.0f, 0.0f,	// Quad 1 vertex 0 (vec2 pos, vec2 texture coordinate)
-		//	 -50.0f, -50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 0.0f, 0.0f,	// Quad 1 vertex 1 (vec2 pos, vec2 texture coordinate)
-		//	 -50.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 1.0f, 1.0f, 0.0f,	// Quad 1 vertex 2 (vec2 pos, vec2 texture coordinate)
-		//	-150.0f,  50.0f, 0.0f, 0.18f, 0.6f, 0.96f, 1.0f, 0.0f, 1.0f, 0.0f,	// Quad 1 vertex 3 (vec2 pos, vec2 texture coordinate)
-
-		//	  50.0f, -50.0f, 0.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f,	// Quad 2 vertex 0 (vec2 pos, vec2 texture coordinate)
-		//	 150.0f, -50.0f, 1.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 0.0f, 1.0f,	// Quad 2 vertex 1 (vec2 pos, vec2 texture coordinate)
-		//	 150.0f,  50.0f, 1.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f,	// Quad 2 vertex 2 (vec2 pos, vec2 texture coordinate)
-		//	  50.0f,  50.0f, 0.0f, 0.0f, 1.0f, 0.93f, 0.24f, 1.0f, 1.0f, 1.0f	// Quad 2 vertex 3 (vec2 pos, vec2 texture coordinate)
-		//};
-
-		const auto q0 = CreateQuad(m_QuadPosition[0], m_QuadPosition[1], 0.0f);
+		const auto q0 = CreateQuad(m_QuadPosition.x, m_QuadPosition.y, 0.0f);
 		const auto q1 = CreateQuad(50.0f, -50.0f, 1.0f);
 
 		Vertex vertices[8];
-
 		memcpy(vertices, q0.data(), q0.size() * sizeof(Vertex));
 		memcpy(vertices + q0.size(), q1.data(), q1.size() * sizeof(Vertex));
 
@@ -82,20 +68,18 @@ namespace test
 		GL_CALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
-		Renderer renderer;
-
-
 		const glm::mat4 model = glm::translate(glm::mat4(1.0f), m_QuadTranslation);
 		const glm::mat4 mvp = m_Proj * m_View * model;
 
 		m_Program->SetUniformMat4f("u_MVP", mvp);
 		
+		Renderer renderer;
 		renderer.Draw(*m_VAO, *m_IndexBuffer, *m_Program);
 	}
 
 	void TestDynamicGeometry::OnImGuiRender()
 	{
-		ImGui::DragFloat2("Quad Position", m_QuadPosition, 0.1f);
+		ImGui::DragFloat2("Quad Position", &m_QuadPosition.x, 0.1f);
 		ImGui::SliderFloat3("Quad Translation", &m_QuadTranslation.x, 0.0f, 960.0f);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);  // NOLINT(clang-diagnostic-double-promotion)
 	}

@@ -33,7 +33,7 @@ namespace test
 
 		glm::mat4 m_Proj, m_View;
 		glm::vec3 m_QuadTranslation;
-		float m_QuadPosition[2];
+		glm::vec2 m_QuadPosition;
 		static std::array<Vertex, 4> CreateQuad(float x, float y, float textureID);
 	};
 }
