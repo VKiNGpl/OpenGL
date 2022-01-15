@@ -7,14 +7,6 @@
 
 namespace test
 {
-	struct Vertex
-	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-		glm::vec2 TexCoords;
-		float TexID;
-	};
-
 	class TestDynamicGeometry final : public Test  // NOLINT(cppcoreguidelines-special-member-functions)
 	{
 	public:
@@ -34,6 +26,14 @@ namespace test
 		glm::mat4 m_Proj, m_View;
 		glm::vec3 m_CamPosition;
 		glm::vec2 m_QuadPosition;
+
+		struct Vertex
+		{
+			glm::vec3 Position;
+			glm::vec4 Color;
+			glm::vec2 TexCoords;
+			float TexID;
+		};
 		static Vertex* CreateQuad(Vertex* target, float x, float y, float textureID);
 	};
 }

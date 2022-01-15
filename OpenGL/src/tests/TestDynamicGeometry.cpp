@@ -101,7 +101,7 @@ namespace test
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);  // NOLINT(clang-diagnostic-double-promotion)
 	}
 
-	Vertex* TestDynamicGeometry::CreateQuad(Vertex* target, float x, float y, const float textureID)
+	TestDynamicGeometry::Vertex* TestDynamicGeometry::CreateQuad(Vertex* target, float x, float y, const float textureID)
 	{
 		constexpr float size = 100.0f;
 
