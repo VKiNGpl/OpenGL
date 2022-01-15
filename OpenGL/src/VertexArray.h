@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VertexBuffer.h"
+#include "DynamicVertexBuffer.h"
 
 class VertexBufferLayout;
 
@@ -11,6 +12,7 @@ public:
 	~VertexArray();
 
 	void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout) const;
+	void AddDynamicBuffer(const DynamicVertexBuffer& dvb, const VertexBufferLayout& layout) const;
 
 	void Bind() const;
 	static void Unbind();
