@@ -32,7 +32,7 @@ namespace test
 			glm::vec3 Position;
 			glm::vec4 Color;
 			glm::vec2 TexCoords;
-			float TexID;
+			float TexIndex;
 		};
 		static Vertex* CreateQuad(Vertex* target, float x, float y, float textureID);
 	};

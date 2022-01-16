@@ -108,25 +108,25 @@ namespace test
 		target->Position = { x, y, 0.0f };
 		target->Color = { 0.18f, 0.6f, 0.96f, 1.0f };
 		target->TexCoords = { 0.0f, 0.0f };
-		target->TexID = textureID;
+		target->TexIndex = textureID;
 		target++;
 
 		target->Position = { x + size, y, 0.0f };
 		target->Color = { 0.18f, 0.6f, 0.96f, 1.0f };
 		target->TexCoords = { 1.0f, 0.0f };
-		target->TexID = textureID;
+		target->TexIndex = textureID;
 		target++;
 
 		target->Position = { x + size, y + size, 0.0f };
 		target->Color = { 0.18f, 0.6f, 0.96f, 1.0f };
 		target->TexCoords = { 1.0f, 1.0f };
-		target->TexID = textureID;
+		target->TexIndex = textureID;
 		target++;
 
 		target->Position = { x, y + size, 0.0f };
 		target->Color = { 0.18f, 0.6f, 0.96f, 1.0f };
 		target->TexCoords = { 0.0f, 1.0f };
-		target->TexID = textureID;
+		target->TexIndex = textureID;
 		target++;
 
 		return target;
