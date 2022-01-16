@@ -174,7 +174,7 @@ void BatchRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, c
 	s_Data.RenderStats.QuadCount++;
 }
 
-void BatchRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, uint32_t textureID)
+void BatchRenderer::DrawQuad(const glm::vec2& position, const glm::vec2& size, const uint32_t textureID)
 {
 	if ( s_Data.IndexCount >= MaxIndexCount || s_Data.TextureSlotIndex > 31)
 	{

@@ -10,6 +10,7 @@
 #include "tests/TestBatchRenderigColor.h"
 #include "tests/TestBatchRenderingTexture2D.h"
 #include "tests/TestDynamicGeometry.h"
+#include "tests/TestCompleteRenderer.h"
 
 int main(void) {
 	if (!glfwInit())
@@ -49,6 +50,7 @@ int main(void) {
 	testMenu->RegisterTest<test::TestBatchRenderingColor>("Batch Rendering Color");
 	testMenu->RegisterTest<test::TestBatchRenderingTexture2D>("Batch 2D Texture");
 	testMenu->RegisterTest<test::TestDynamicGeometry>("Dynamic Geometry");
+	testMenu->RegisterTest<test::TestCompleteRenderer>("Complete Renderer");
 
 	while (!glfwWindowShouldClose(window))
 	{
