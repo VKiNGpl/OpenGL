@@ -31,10 +31,6 @@ namespace test
 			uint32_t QuadCount = 0;
 		};
 	private:
-		std::unique_ptr<VertexArray> m_VAO;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<DynamicVertexBuffer> m_DynamicVertexBuffer;
-		std::unique_ptr <IndexBuffer> m_IndexBuffer;
 		std::unique_ptr <GLProgram> m_Program;
 		std::unique_ptr<Texture> m_Texture, m_AltTexture;
 

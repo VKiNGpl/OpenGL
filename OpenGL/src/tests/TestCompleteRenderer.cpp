@@ -1,5 +1,4 @@
 #include "TestCompleteRenderer.h"
-#include "VertexBufferLayout.h"
 
 #include "imgui.h"
 #include "gtc/matrix_transform.hpp"
@@ -43,6 +42,25 @@ namespace test
 	{
 		s_Data.QuadBuffer = new Vertex[MaxVertexCount];
 
+		glCreateVertexArrays(1, &s_Data.QuadVA);
+		glBindVertexArray(s_Data.QuadVA);
+
+		glCreateBuffers(1, &s_Data.QuadVB);
+		glBindBuffer(GL_ARRAY_BUFFER, s_Data.QuadVB);
+		glBufferData(GL_ARRAY_BUFFER, MaxVertexCount * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+
+		glEnableVertexArrayAttrib(s_Data.QuadVA, 0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Position)));  // NOLINT(performance-no-int-to-ptr)
+
+		glEnableVertexArrayAttrib(s_Data.QuadVA, 0);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Color)));  // NOLINT(performance-no-int-to-ptr)
+
+		glEnableVertexArrayAttrib(s_Data.QuadVA, 0);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, TexCoords)));  // NOLINT(performance-no-int-to-ptr)
+
+		glEnableVertexArrayAttrib(s_Data.QuadVA, 0);
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, TexIndex)));  // NOLINT(performance-no-int-to-ptr)
+
 		uint32_t indices[MaxIndexCount]{};
 		uint32_t offset = 0;
 		for (size_t i = 0; i < MaxIndexCount; i +=6)
@@ -58,20 +76,10 @@ namespace test
 			offset += 4;
 		}
 
-		m_VAO = std::make_unique<VertexArray>();
-
-		m_DynamicVertexBuffer = std::make_unique<DynamicVertexBuffer>(static_cast<unsigned int>(MaxVertexCount * sizeof(Vertex)));
-
-		VertexBufferLayout layout;
-		layout.Push<float>(3);
-		layout.Push<float>(4);
-		layout.Push<float>(2);
-		layout.Push<float>(1);
-
-		m_VAO->AddDynamicBuffer(*m_DynamicVertexBuffer, layout);
-
-		m_IndexBuffer = std::make_unique<IndexBuffer>(indices, static_cast<unsigned int>(sizeof(indices)));
-
+		glCreateBuffers(1, &s_Data.QuadIB);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_Data.QuadIB);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		
 		m_Program = std::make_unique<GLProgram>("BasicBatchRenderer", "res/shaders/");
 		m_Program->Bind();
 
@@ -97,6 +105,8 @@ namespace test
 		const auto loc = glGetUniformLocation(m_Program->GetRendererID(), "u_Textures");
 		constexpr int samplers[2] = { 0, 1 };
 		glUniform1iv(loc, 2, samplers);
+
+		glUseProgram(m_Program->GetRendererID());
 	}
 
 	void TestCompleteRenderer::OnUpdate(float deltaTime)
@@ -105,6 +115,10 @@ namespace test
 
 	void TestCompleteRenderer::OnRender()
 	{
+		//GL_CALL(glClearColor(1.f, 0.1f, 0.1f, 1.0f));
+		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+		glUseProgram(m_Program->GetRendererID());
+
 		ResetStats();
 		BeginBatch();
 
@@ -112,7 +126,7 @@ namespace test
 		{
 			for (float x = -10.0f; x < 10.0f; x += 0.25f)  // NOLINT(cert-flp30-c)
 			{
-				glm::vec2 position = { static_cast<float>(x), static_cast<float>(y) };
+				glm::vec2 position = { x, y };
 				glm::vec4 color = { (x + 10) / 20.0f, 0.2f, (y+10) / 20.0f, 1.0f };
 				DrawQuad(position, { 100.0f, 100.0f }, color);
 			}
@@ -129,18 +143,13 @@ namespace test
 
 		DrawQuad(m_QuadPosition, { 100.0f, 100.0f }, 1);
 
-		m_DynamicVertexBuffer->Bind();
-
-		GL_CALL(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
-		GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
-
 		const glm::mat4 model = glm::translate(glm::mat4(1.0f), m_CamPosition);
 		const glm::mat4 mvp = m_Proj * m_View * model;
 
 		m_Program->SetUniformMat4f("u_ViewProj", mvp);
-		
-		Renderer renderer;
-		renderer.Draw(*m_VAO, *m_IndexBuffer, *m_Program);
+
+		EndBatch();
+		Flush();
 	}
 
 	void TestCompleteRenderer::OnImGuiRender()
@@ -278,7 +287,7 @@ namespace test
 		s_Data.QuadBufferPtr++;
 
 		s_Data.IndexCount += 6;
-		//s_Data.RenderStats.QuadCount++;
+		s_Data.RenderStats.QuadCount++;
 	}
 
 	const test::TestCompleteRenderer::Stats& TestCompleteRenderer::GetStats()
